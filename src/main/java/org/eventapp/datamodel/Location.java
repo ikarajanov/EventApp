@@ -8,12 +8,12 @@ import lombok.ToString;
 @Getter
 @Builder
 @ToString
-public class User {
+public class Location {
 
-  private String email;
-  private String password;
-  private String address;
+  private String id;
+  private String name;
   private String city;
-  private String state;
-  private String zip;
+  private String country;
+  private float latitude;
+  private float longitude;
 }
