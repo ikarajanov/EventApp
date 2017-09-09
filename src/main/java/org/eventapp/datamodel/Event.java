@@ -56,7 +56,7 @@ public class Event {
 
   @NotNull
   @Column(name = "description")
-  @Size(max = 250)
+  @Size(max = 500)
   private String description;
 
   @NotNull

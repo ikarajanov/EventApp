@@ -13,7 +13,7 @@ public class App extends AbstractAnnotationConfigDispatcherServletInitializer {
   }
   protected Class<?>[] getServletConfigClasses() {
     return new Class[]{
-        WebConfiguration.class
+      WebConfiguration.class
     };
   }
 
