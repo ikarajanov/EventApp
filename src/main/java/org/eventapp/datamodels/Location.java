@@ -1,4 +1,4 @@
-package org.eventapp.datamodel;
+package org.eventapp.datamodels;
 
 import java.util.ArrayList;
 import java.util.List;

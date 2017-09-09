@@ -23,9 +23,9 @@ public class DatabaseConfiguration {
   @Bean
   public DataSource dataSource() {
     final MysqlDataSource mysqlDataSource = new MysqlDataSource();
-    mysqlDataSource.setURL("jdbc:mysql://localhost:3311/eventapp");
+    mysqlDataSource.setURL("jdbc:mysql://localhost:3306/eventapp");
     mysqlDataSource.setUser("root");
-    mysqlDataSource.setPassword("root");
+    mysqlDataSource.setPassword("");
     return mysqlDataSource;
   }
 
@@ -43,7 +43,7 @@ public class DatabaseConfiguration {
 
     LocalContainerEntityManagerFactoryBean entityManagerFactoryBean = new LocalContainerEntityManagerFactoryBean();
     entityManagerFactoryBean.setDataSource(dataSource());
-    entityManagerFactoryBean.setPackagesToScan("com.brkom.datamodels");
+    entityManagerFactoryBean.setPackagesToScan("com.eventapp.datamodels");
     entityManagerFactoryBean.setJpaVendorAdapter(hibernateJpaVendorAdapter);
 
     return entityManagerFactoryBean;

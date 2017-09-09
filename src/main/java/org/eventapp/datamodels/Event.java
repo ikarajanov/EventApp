@@ -1,4 +1,4 @@
-package org.eventapp.datamodel;
+package org.eventapp.datamodels;
 
 
 import java.util.Date;
@@ -20,7 +20,7 @@ import lombok.Getter;
 @Getter
 @Builder
 @Entity
-@Table(name = "event")
+@Table(name = "events")
 public class Event {
 
   @NotNull
@@ -43,11 +43,10 @@ public class Event {
   @JoinColumn(name = "location_id", referencedColumnName = "id", nullable = false)
   private Location location;
 
-  @Column(name = "number_Of_people_attending")
+  @Column(name = "number_of_people_attending")
   private Integer numberOfPeopleAttending;
 
   @NotNull
-  @Column(name = "category")
   @Size(max = 250)
   private String category;
 

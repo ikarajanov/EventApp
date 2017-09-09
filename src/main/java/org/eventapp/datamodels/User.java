@@ -1,4 +1,4 @@
-package org.eventapp.datamodel;
+package org.eventapp.datamodels;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,12 +22,12 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
-@Table(name = "User")
+@Table(name = "users")
 public class User {
 
   @NotNull
   @Column(name = "id")
-  @Size(max = 250)
+  @Size(max = 20)
   private String id;
 
   @NotNull
