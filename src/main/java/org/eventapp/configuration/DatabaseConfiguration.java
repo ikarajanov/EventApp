@@ -23,7 +23,7 @@ public class DatabaseConfiguration {
   @Bean
   public DataSource dataSource() {
     final MysqlDataSource mysqlDataSource = new MysqlDataSource();
-    mysqlDataSource.setURL("jdbc:mysql://localhost:3311/brkomorders");
+    mysqlDataSource.setURL("jdbc:mysql://localhost:3311/eventapp");
     mysqlDataSource.setUser("root");
     mysqlDataSource.setPassword("root");
     return mysqlDataSource;
