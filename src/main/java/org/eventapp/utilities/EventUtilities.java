@@ -5,7 +5,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-import org.eventapp.datamodel.Event;
+import org.eventapp.viewmodels.Event;
 import org.eventapp.utilities.enums.EventCategory;
 
 public class EventUtilities {

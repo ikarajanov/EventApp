@@ -9,7 +9,7 @@ import java.net.ProtocolException;
 import java.net.URL;
 import java.util.List;
 
-import org.eventapp.datamodel.Event;
+import org.eventapp.viewmodels.Event;
 import org.eventapp.services.EventService;
 import org.eventapp.utilities.EventUtilities;
 import org.springframework.stereotype.Service;

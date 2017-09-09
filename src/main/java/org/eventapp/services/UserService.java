@@ -1,6 +1,6 @@
 package org.eventapp.services;
 
-import org.eventapp.datamodel.User;
+import org.eventapp.viewmodels.User;
 
 public interface UserService {
 

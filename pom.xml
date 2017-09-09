@@ -15,15 +15,22 @@
   <properties>
     <spring.version>4.3.10.RELEASE</spring.version>
     <spring-data-jpa.version>1.11.6.RELEASE</spring-data-jpa.version>
+    <spring-data.version>1.11.6.RELEASE</spring-data.version>
+    <hibernate.version>5.2.10.Final</hibernate.version>
+    <hibernate-validator.version>5.2.2.Final</hibernate-validator.version>
+    <hibernate-jpa-api.version>1.0.0.Final</hibernate-jpa-api.version>
     <jstl.version>1.2</jstl.version>
     <validation-api.version>1.0.0.GA</validation-api.version>
     <spring-webmvc.version>4.3.9.RELEASE</spring-webmvc.version>
     <jackson-core.version>2.9.0</jackson-core.version>
     <jackson-databind.version>2.7.4</jackson-databind.version>
+    <mysql-connector-java.version>5.1.43</mysql-connector-java.version>
+    <hibernate-java8.version>5.1.0.Final</hibernate-java8.version>
   </properties>
 
   <dependencies>
     <!-- spring dependencies -->
+
     <dependency>
       <groupId>org.springframework</groupId>
       <artifactId>spring-context-support</artifactId>
@@ -61,33 +68,53 @@
     <dependency>
       <groupId>org.springframework.data</groupId>
       <artifactId>spring-data-jpa</artifactId>
-      <version>1.9.0.RELEASE</version>
+      <version>${spring-data.version}</version>
     </dependency>
+
     <dependency>
-      <groupId>org.hibernate</groupId>
       <artifactId>hibernate-core</artifactId>
-      <version>4.0.1.Final</version>
-    </dependency>
-    <dependency>
       <groupId>org.hibernate</groupId>
-      <artifactId>hibernate-validator</artifactId>
-      <version>4.2.0.Final</version>
+      <version>${hibernate.version}</version>
+      <exclusions>
+        <exclusion>
+          <artifactId>jta</artifactId>
+          <groupId>javax.transaction</groupId>
+        </exclusion>
+        <exclusion>
+          <groupId>org.jboss.spec.javax.transaction</groupId>
+          <artifactId>jboss-transaction-api_1.1_spec</artifactId>
+        </exclusion>
+      </exclusions>
     </dependency>
+
     <dependency>
-      <groupId>org.hibernate.common</groupId>
-      <artifactId>hibernate-commons-annotations</artifactId>
-      <version>4.0.1.Final</version>
-      <classifier>tests</classifier>
+      <artifactId>hibernate-validator</artifactId>
+      <groupId>org.hibernate</groupId>
+      <version>${hibernate-validator.version}</version>
+      <exclusions>
+        <exclusion>
+          <artifactId>stax-api</artifactId>
+          <groupId>javax.xml.stream</groupId>
+        </exclusion>
+      </exclusions>
     </dependency>
+
     <dependency>
       <groupId>org.hibernate.javax.persistence</groupId>
-      <artifactId>hibernate-jpa-2.0-api</artifactId>
-      <version>1.0.1.Final</version>
+      <artifactId>hibernate-jpa-2.1-api</artifactId>
+      <version>${hibernate-jpa-api.version}</version>
     </dependency>
+
     <dependency>
       <groupId>org.hibernate</groupId>
-      <artifactId>hibernate-entitymanager</artifactId>
-      <version>4.0.1.Final</version>
+      <artifactId>hibernate-java8</artifactId>
+      <version>${hibernate-java8.version}</version>
+    </dependency>
+
+    <dependency>
+      <groupId>mysql</groupId>
+      <artifactId>mysql-connector-java</artifactId>
+      <version>${mysql-connector-java.version}</version>
     </dependency>
 
     <dependency>

@@ -1,4 +1,4 @@
-package org.eventapp.datamodel;
+package org.eventapp.viewmodels;
 
 import lombok.Builder;
 import lombok.Getter;

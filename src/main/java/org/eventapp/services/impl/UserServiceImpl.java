@@ -1,10 +1,7 @@
 package org.eventapp.services.impl;
 
-import org.eventapp.datamodel.User;
+import org.eventapp.viewmodels.User;
 import org.eventapp.services.UserService;
-import org.eventapp.utilities.exceptions.IncorrectPasswordException;
-import org.eventapp.utilities.exceptions.UserAlreadyExistException;
-import org.eventapp.utilities.exceptions.UserEmailNotFoundException;
 import org.springframework.stereotype.Service;
 
 @Service

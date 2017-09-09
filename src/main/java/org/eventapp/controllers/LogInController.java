@@ -1,13 +1,8 @@
 package org.eventapp.controllers;
 
-import org.eventapp.datamodel.User;
+import org.eventapp.viewmodels.User;
 import org.eventapp.services.UserService;
-import org.eventapp.utilities.exceptions.IncorrectPasswordException;
-import org.eventapp.utilities.exceptions.UserAlreadyExistException;
-import org.eventapp.utilities.exceptions.UserEmailNotFoundException;
-import org.eventapp.utilities.exceptions.UserNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;

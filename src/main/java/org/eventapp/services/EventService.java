@@ -2,7 +2,7 @@ package org.eventapp.services;
 
 import java.util.List;
 
-import org.eventapp.datamodel.Event;
+import org.eventapp.viewmodels.Event;
 
 
 public interface EventService {

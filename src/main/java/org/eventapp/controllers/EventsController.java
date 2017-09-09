@@ -2,7 +2,7 @@ package org.eventapp.controllers;
 
 import java.util.List;
 
-import org.eventapp.datamodel.Event;
+import org.eventapp.viewmodels.Event;
 import org.eventapp.services.EventService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
