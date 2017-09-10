@@ -1,11 +1,14 @@
-package org.eventapp.datamodels;
+package org.eventapp.persistence.datamodels;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.Access;
+import javax.persistence.AccessType;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
@@ -21,14 +24,10 @@ import lombok.Setter;
 
 @Getter
 @Setter
+@Access(AccessType.FIELD)
 @Entity
 @Table(name = "users")
-public class User {
-
-  @NotNull
-  @Column(name = "id")
-  @Size(max = 20)
-  private String id;
+public class User extends BaseEntity {
 
   @NotNull
   @Column(name = "first_name")
@@ -36,9 +35,9 @@ public class User {
   private String firstName;
 
   @NotNull
-  @Column(name = "second_name")
+  @Column(name = "last_name")
   @Size(max = 250)
-  private String secondName;
+  private String lastName;
 
   @NotNull
   @Column(name = "email")
@@ -50,12 +49,11 @@ public class User {
   @Size(max = 250)
   private String password;
 
-  @NotNull
   @ManyToOne
   @JoinColumn (name = "location_id", referencedColumnName = "id", nullable = false)
   private Location location;
 
   @Fetch(FetchMode.SUBSELECT)
-  @OneToMany(cascade = CascadeType.ALL, mappedBy = "owner")
-  private List<Event> events = new ArrayList<Event>();
+  @OneToMany(cascade = CascadeType.ALL,  fetch = FetchType.EAGER, mappedBy = "owner")
+  private List<Event> createdEvents = new ArrayList<Event>();
 }

@@ -1,11 +1,15 @@
 package org.eventapp.services;
 
-import org.eventapp.viewmodels.User;
+import java.util.List;
+
+import org.eventapp.models.EventModel;
+import org.eventapp.models.UserModel;
 
 public interface UserService {
 
-  User getUser(User user);
+  UserModel getUser(String email, String password);
 
-  User createNewUser(User user);
+  UserModel createNewUser(UserModel user);
 
+  List<EventModel> getUserEvents(String userId);
 }

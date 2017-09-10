@@ -9,15 +9,16 @@ import java.net.ProtocolException;
 import java.net.URL;
 import java.util.List;
 
-import org.eventapp.viewmodels.Event;
+import org.eventapp.models.EventModel;
+import org.eventapp.persistence.service.EventPersistenceService;
 import org.eventapp.services.EventService;
-import org.eventapp.utilities.EventUtilities;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
 public class EventServiceImpl implements EventService {
 
-  public List<Event> getFbUserEvents(String accessToken) {
+  public List<EventModel> getFbUserEvents(String accessToken) {
 
     try {
       String urlString = "http://graph.facebook.com/v2.10/" + accessToken + "/events";
@@ -48,7 +49,4 @@ public class EventServiceImpl implements EventService {
     return null;
   }
 
-  public List<Event> getUserEvents(String userId) {
-    return EventUtilities.getMockEvents();
-  }
 }

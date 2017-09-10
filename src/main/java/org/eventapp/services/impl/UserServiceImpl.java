@@ -1,21 +1,33 @@
 package org.eventapp.services.impl;
 
-import org.eventapp.viewmodels.User;
+import java.util.List;
+
+import org.eventapp.models.EventModel;
+import org.eventapp.models.UserModel;
+import org.eventapp.persistence.service.UserPersistenceService;
 import org.eventapp.services.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
 public class UserServiceImpl implements UserService{
 
-  public User getUser(User user) {
+  @Autowired
+  private UserPersistenceService userPersistenceService;
 
-    // TODO
+  public UserModel getUser(String email, String pasword) {
+
+    return userPersistenceService.getUser(email, pasword);
+  }
+
+  public UserModel createNewUser(UserModel user) {
+
+    userPersistenceService.createNewUser(user);
+
     return user;
   }
 
-  public User createNewUser(User user) {
-
-    // TODO
-    return user;
+  public List<EventModel> getUserEvents(String userId) {
+    return userPersistenceService.getUserEvents(userId);
   }
 }

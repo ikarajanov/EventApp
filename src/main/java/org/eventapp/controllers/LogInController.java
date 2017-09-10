@@ -1,6 +1,6 @@
 package org.eventapp.controllers;
 
-import org.eventapp.viewmodels.User;
+import org.eventapp.models.UserModel;
 import org.eventapp.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -17,17 +17,17 @@ public class LogInController {
   private UserService userService;
 
   @PostMapping( path = "/addNew", produces = MediaType.APPLICATION_JSON_VALUE)
-  public User addNewUser(@RequestBody User user) {
+  public UserModel addNewUser(@RequestBody UserModel user) {
 
-    User loggedUser = userService.createNewUser(user);
+    UserModel loggedUser = userService.createNewUser(user);
 
     return loggedUser;
   }
 
   @PostMapping( path = "/logIn", produces = MediaType.APPLICATION_JSON_VALUE)
-  public User logIn(@RequestBody User user) {
+  public UserModel logIn(@RequestBody UserModel user) {
 
-    User loggedUser = userService.getUser(user);
+    UserModel loggedUser = userService.getUser(user.getEmail(), user.getPassword());
 
     return loggedUser;
   }

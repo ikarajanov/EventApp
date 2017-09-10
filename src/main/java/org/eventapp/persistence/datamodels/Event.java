@@ -1,8 +1,10 @@
-package org.eventapp.datamodels;
+package org.eventapp.persistence.datamodels;
 
 
 import java.util.Date;
 
+import javax.persistence.Access;
+import javax.persistence.AccessType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
@@ -11,34 +13,25 @@ import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
-import org.eventapp.viewmodels.Location;
-import org.eventapp.viewmodels.User;
-
-import lombok.Builder;
 import lombok.Getter;
+import lombok.Setter;
 
+@Setter
 @Getter
-@Builder
+@Access(AccessType.FIELD)
 @Entity
 @Table(name = "events")
-public class Event {
-
-  @NotNull
-  @Column(name = "id")
-  @Size(max = 250)
-  private String id;
+public class Event extends BaseEntity{
 
   @NotNull
   @Column(name = "name")
   @Size(max = 250)
   private String name;
 
-  @NotNull
   @ManyToOne
   @JoinColumn(name = "owner_id", referencedColumnName = "id", nullable = false)
   private User owner;
 
-  @NotNull
   @ManyToOne
   @JoinColumn(name = "location_id", referencedColumnName = "id", nullable = false)
   private Location location;

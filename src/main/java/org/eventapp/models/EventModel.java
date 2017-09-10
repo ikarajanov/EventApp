@@ -1,21 +1,21 @@
-package org.eventapp.viewmodels;
+package org.eventapp.models;
 
-import lombok.Builder;
 import lombok.Getter;
+import lombok.Setter;
 import lombok.ToString;
 
 @Getter
-@Builder
+@Setter
 @ToString
-public class Event {
+public class EventModel {
 
   private String id;
   private String name;
-  private User owner;
-  private Location location;
+  private UserModel owner;
+  private LocationModel location;
   private Integer numberOfPeopleAttending;
   private String category;
-  private CoverPhoto coverPhoto;
+  private CoverPhotoModel coverPhoto;
   private String description;
   private String startTime;
   private String endTime;

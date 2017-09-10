@@ -2,12 +2,10 @@ package org.eventapp.services;
 
 import java.util.List;
 
-import org.eventapp.viewmodels.Event;
+import org.eventapp.models.EventModel;
 
 
 public interface EventService {
 
-  List<Event> getUserEvents(String userId);
-
-  List<Event> getFbUserEvents(String accessToken);
+  List<EventModel> getFbUserEvents(String accessToken);
 }

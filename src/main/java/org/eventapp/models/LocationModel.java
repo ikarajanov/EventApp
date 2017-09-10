@@ -1,14 +1,14 @@
-package org.eventapp.viewmodels;
+package org.eventapp.models;
 
-import lombok.Builder;
 import lombok.Getter;
+import lombok.Setter;
 import lombok.ToString;
 
 
 @Getter
-@Builder
+@Setter
 @ToString
-public class Location {
+public class LocationModel {
 
   private String id;
   private String name;

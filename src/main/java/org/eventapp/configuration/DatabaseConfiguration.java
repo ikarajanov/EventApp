@@ -43,7 +43,7 @@ public class DatabaseConfiguration {
 
     LocalContainerEntityManagerFactoryBean entityManagerFactoryBean = new LocalContainerEntityManagerFactoryBean();
     entityManagerFactoryBean.setDataSource(dataSource());
-    entityManagerFactoryBean.setPackagesToScan("com.eventapp.datamodels");
+    entityManagerFactoryBean.setPackagesToScan("org.eventapp.persistence.datamodels");
     entityManagerFactoryBean.setJpaVendorAdapter(hibernateJpaVendorAdapter);
 
     return entityManagerFactoryBean;
