@@ -26,6 +26,8 @@
     <jackson-databind.version>2.7.4</jackson-databind.version>
     <mysql-connector-java.version>5.1.43</mysql-connector-java.version>
     <hibernate-java8.version>5.1.0.Final</hibernate-java8.version>
+    <java-source.version>1.8</java-source.version>
+    <java-target.version>1.8</java-target.version>
   </properties>
 
   <dependencies>
@@ -157,6 +159,14 @@
         </configuration>
       </plugin>
 
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <configuration>
+          <source>${java-source.version}</source>
+          <target>${java-target.version}</target>
+        </configuration>
+      </plugin>
     </plugins>
   </build>
 

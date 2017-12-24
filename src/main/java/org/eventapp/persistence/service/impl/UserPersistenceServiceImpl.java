@@ -7,8 +7,8 @@ import org.eventapp.models.EventModel;
 import org.eventapp.models.UserModel;
 import org.eventapp.persistence.datamodels.Event;
 import org.eventapp.persistence.datamodels.User;
-import org.eventapp.persistence.mappers.EventModelMapper;
-import org.eventapp.persistence.mappers.UserModelMapper;
+import org.eventapp.persistence.mappers.EventModelFactory;
+import org.eventapp.persistence.mappers.UserModelFactory;
 import org.eventapp.persistence.repositories.UserRepository;
 import org.eventapp.persistence.service.PersistenceService;
 import org.eventapp.persistence.service.UserPersistenceService;
@@ -21,27 +21,26 @@ import org.springframework.beans.factory.annotation.Autowired;
 public class UserPersistenceServiceImpl implements UserPersistenceService {
 
   @Autowired
-  private UserRepository userRepostory;
+  private UserRepository userRepository;
 
   public void createNewUser(UserModel userModel) {
 
-    User user = new User();
-    UserModelMapper.mapUserModelToDb(userModel, user);
+    User user = UserModelFactory.createUser(userModel);
 
     boolean emailIsAlreadyExist = checkIfEmailIsAlreadyExist(userModel.getEmail());
     if (emailIsAlreadyExist) {
       throw new UserAlreadyExistException();
     }
 
-    userRepostory.save(user);
+    userRepository.save(user);
   }
 
   public UserModel getUser(String email, String password) {
 
-    User user = userRepostory.getUserByEmailAndPassword(email, password);
+    User user = userRepository.getUserByEmailAndPassword(email, password);
 
     if (user == null) {
-      user = userRepostory.getUserByEmail(email);
+      user = userRepository.getUserByEmail(email);
 
       if (user == null) {
         throw new UserEmailNotFoundException();
@@ -50,15 +49,11 @@ public class UserPersistenceServiceImpl implements UserPersistenceService {
       throw new IncorrectPasswordException();
     }
 
-    UserModel userModel = new UserModel();
-
-    UserModelMapper.mapUserToUserModel(user, userModel);
-
-    return userModel;
+    return UserModelFactory.createUserModel(user);
   }
 
   public List<EventModel> getUserEvents(String userId) {
-    User user = userRepostory.getUserById(userId);
+    User user = userRepository.getUserById(userId);
 
     if (user == null) {
       return null;
@@ -68,8 +63,7 @@ public class UserPersistenceServiceImpl implements UserPersistenceService {
     List<EventModel> userEvents = new ArrayList<EventModel>();
 
     for (Event event : createdEvents) {
-      EventModel eventModel = new EventModel();
-      EventModelMapper.mapEventToEventModel(event, eventModel);
+      EventModel eventModel = EventModelFactory.createEventModel(event);
       userEvents.add(eventModel);
     }
     
@@ -79,7 +73,7 @@ public class UserPersistenceServiceImpl implements UserPersistenceService {
 
   private boolean checkIfEmailIsAlreadyExist(String email) {
 
-    User user = userRepostory.getUserByEmail(email);
+    User user = userRepository.getUserByEmail(email);
     return user != null;
   }
 }

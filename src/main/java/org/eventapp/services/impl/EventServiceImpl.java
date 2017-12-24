@@ -11,12 +11,19 @@ import java.util.List;
 
 import org.eventapp.models.EventModel;
 import org.eventapp.persistence.service.EventPersistenceService;
+import org.eventapp.services.Categories;
 import org.eventapp.services.EventService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+/**
+ * Implementation of Event Service.
+ */
 @Service
 public class EventServiceImpl implements EventService {
+
+  @Autowired
+  private EventPersistenceService eventPersistenceService;
 
   public List<EventModel> getFbUserEvents(String accessToken) {
 
@@ -49,4 +56,20 @@ public class EventServiceImpl implements EventService {
     return null;
   }
 
+  /**
+   * Gets all event categories.
+   */
+  public List<String> getEventCategories() {
+    return Categories.getAllCategories();
+  }
+
+  /**
+   * Creates new Event.
+   *
+   * @param eventModel the {@link EventModel}.
+   */
+  public void createNewEvent(EventModel eventModel) {
+
+    eventPersistenceService.createNewEvent(eventModel);
+  }
 }

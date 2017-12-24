@@ -21,7 +21,7 @@ import lombok.Setter;
 @Access(AccessType.FIELD)
 @Entity
 @Table(name = "events")
-public class Event extends BaseEntity{
+public class Event extends BaseEntity {
 
   @NotNull
   @Column(name = "name")

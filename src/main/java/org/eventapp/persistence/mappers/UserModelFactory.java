@@ -11,33 +11,61 @@ import org.eventapp.models.UserModel;
 import org.eventapp.persistence.datamodels.Event;
 import org.eventapp.persistence.datamodels.Location;
 import org.eventapp.persistence.datamodels.User;
-public class UserModelMapper {
 
-  public static void mapUserModelToDb(UserModel userModel, User user) {
+/**
+ * User Model Factory.
+ */
+public class UserModelFactory {
+
+  /**
+   * Creates new User.
+   *
+   * @param userModel the {@link UserModel}.
+   *
+   * @return the new user.
+   */
+  public static User createUser(UserModel userModel) {
+
+    User user = new User();
 
     user.setFirstName(userModel.getFirstName());
     user.setLastName(userModel.getLastName());
     user.setEmail(userModel.getEmail());
     user.setPassword(userModel.getPassword());
+
+    LocationModel locationModel = userModel.getLocation();
+    Location location = LocationModelMapper.createLocation(locationModel);
+    user.setLocation(location);
+
     user.setCreatedEvents(getUserEvents(userModel.getCreatedEvents()));
 
-    Location location = user.getLocation();
-    LocationModel locationModel = new LocationModel();
-    LocationModelMapper.mapLocationModelToDb(locationModel, location);
-    user.setLocation(location);
+    return user;
   }
 
-  public static void mapUserToUserModel(User user, UserModel userModel) {
+  /**
+   * Creates nes User Model.
+   *
+   * @param user the {@link User}.
+   *
+   * @return the new user model.
+   */
+  public static UserModel createUserModel(User user) {
 
+    UserModel userModel = new UserModel();
+
+    userModel.setId(user.getId());
     userModel.setFirstName(user.getFirstName());
     userModel.setLastName(user.getLastName());
     userModel.setEmail(user.getEmail());
     userModel.setPassword(user.getPassword());
+
     Location location = user.getLocation();
-    LocationModel locationModel = new LocationModel();
-    LocationModelMapper.mapLocationToLocationModel(location, locationModel);
+    LocationModel locationModel = LocationModelMapper.createLocationModel(location);
     userModel.setLocation(locationModel);
+
     userModel.setCreatedEvents(getAllUserDbEvents(user.getCreatedEvents()));
+
+    return userModel;
   }
 
   private static List<Event> getUserEvents(Map<String, EventModel> userModelEvents) {
@@ -45,10 +73,9 @@ public class UserModelMapper {
     List<Event> events = new ArrayList<Event>();
 
     for (String key : userModelEvents.keySet()) {
-      EventModel eventModel = userModelEvents.get(key);
-      Event event = new Event();
-      EventModelMapper.mapEventModelToDb(eventModel, event);
 
+      EventModel eventModel = userModelEvents.get(key);
+      Event event = EventModelFactory.createEvent(eventModel);
       events.add(event);
     }
 
@@ -59,18 +86,10 @@ public class UserModelMapper {
 
     Map<String, EventModel> userModelEvents = new HashMap<String, EventModel>();
 
-
     for (Event event : events) {
+
       String dbId = event.getId();
-
-      EventModel eventModel = userModelEvents.get(dbId);
-
-      if (eventModel == null) {
-        eventModel = new EventModel();
-      }
-
-      EventModelMapper.mapEventToEventModel(event, eventModel);
-
+      EventModel eventModel = EventModelFactory.createEventModel(event);
       userModelEvents.put(dbId, eventModel);
     }
 

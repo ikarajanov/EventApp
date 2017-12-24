@@ -1,5 +1,6 @@
 package org.eventapp.persistence.datamodels;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,28 +22,35 @@ import lombok.Setter;
 
 @Getter
 @Setter
-@Access(AccessType.FIELD)
 @Entity
+@Access(AccessType.FIELD)
 @Table(name = "locations")
 public class Location extends BaseEntity {
+
+  @Column(name = "name")
+  @Size(max = 250)
+  private String name;
 
   @Column(name = "address")
   @Size(max = 250)
   private String address;
 
-  @Column(name = "city")
-  @Size(max = 250)
-  private String city;
+  @Column(name = "google_map_url")
+  @Size(max = 500)
+  private String googleMapUrl;
 
-  @Column(name = "state")
-  @Size(max = 250)
-  private String state;
+  @Column(name = "latitude")
+  private BigDecimal latitude;
 
-  @Fetch(FetchMode.SUBSELECT)
-  @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "location")
-  private List<User> users = new ArrayList<User>();
+  @Column(name = "longitude")
+  private BigDecimal longitude;
 
   @Fetch(FetchMode.SUBSELECT)
   @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "location")
-  private List<Event> events = new ArrayList<Event>();
+  private List<User> users = new ArrayList<>();
+
+  @Fetch(FetchMode.SUBSELECT)
+  @OneToMany(cascade = CascadeType.ALL,   fetch = FetchType.EAGER, mappedBy = "location")
+  private List<Event> events = new ArrayList<>();
 }
+
