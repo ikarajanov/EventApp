@@ -55,5 +55,5 @@ public class User extends BaseEntity {
 
   @Fetch(FetchMode.SUBSELECT)
   @OneToMany(cascade = CascadeType.ALL,  fetch = FetchType.EAGER, mappedBy = "owner")
-  private List<Event> createdEvents = new ArrayList<Event>();
+  private List<Event> createdEvents = new ArrayList<>();
 }

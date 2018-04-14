@@ -2,7 +2,7 @@ package org.eventapp.persistence.service.impl;
 
 import org.eventapp.models.EventModel;
 import org.eventapp.persistence.datamodels.Event;
-import org.eventapp.persistence.mappers.EventModelFactory;
+import org.eventapp.persistence.factories.EventModelFactory;
 import org.eventapp.persistence.repositories.EventRepository;
 import org.eventapp.persistence.service.EventPersistenceService;
 import org.eventapp.persistence.service.PersistenceService;

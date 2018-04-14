@@ -16,18 +16,27 @@
     <spring.version>4.3.10.RELEASE</spring.version>
     <spring-data-jpa.version>1.11.6.RELEASE</spring-data-jpa.version>
     <spring-data.version>1.11.6.RELEASE</spring-data.version>
+    <spring-webmvc.version>4.3.9.RELEASE</spring-webmvc.version>
+
     <hibernate.version>5.2.10.Final</hibernate.version>
     <hibernate-validator.version>5.2.2.Final</hibernate-validator.version>
     <hibernate-jpa-api.version>1.0.0.Final</hibernate-jpa-api.version>
+    <hibernate-java8.version>5.1.0.Final</hibernate-java8.version>
+
     <jstl.version>1.2</jstl.version>
     <validation-api.version>1.0.0.GA</validation-api.version>
-    <spring-webmvc.version>4.3.9.RELEASE</spring-webmvc.version>
+
     <jackson-core.version>2.9.0</jackson-core.version>
     <jackson-databind.version>2.7.4</jackson-databind.version>
+
     <mysql-connector-java.version>5.1.43</mysql-connector-java.version>
-    <hibernate-java8.version>5.1.0.Final</hibernate-java8.version>
+
     <java-source.version>1.8</java-source.version>
     <java-target.version>1.8</java-target.version>
+    <lombok.version>1.16.16</lombok.version>
+    <slf4j.version>1.8.0-beta2</slf4j.version>
+
+    <slf4j.log4j12.version>1.8.0-beta2</slf4j.log4j12.version>
   </properties>
 
   <dependencies>
@@ -141,9 +150,23 @@
     <dependency>
       <groupId>org.projectlombok</groupId>
       <artifactId>lombok</artifactId>
-      <version>1.16.16</version>
+      <version>${lombok.version}</version>
       <scope>provided</scope>
     </dependency>
+
+   <!-- logging -->
+    <dependency>
+      <groupId>org.slf4j</groupId>
+      <artifactId>slf4j-api</artifactId>
+      <version>${slf4j.version}</version>
+    </dependency>
+
+    <dependency>
+      <groupId>org.slf4j</groupId>
+      <artifactId>slf4j-log4j12</artifactId>
+      <version>${slf4j.log4j12.version}</version>
+    </dependency>
+
   </dependencies>
 
 

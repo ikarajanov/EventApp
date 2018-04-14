@@ -18,5 +18,4 @@ public class UserModel {
   private String email;
   private String password;
   private LocationModel location;
-  private Map<String, EventModel> createdEvents = new HashMap<String, EventModel>();
 }

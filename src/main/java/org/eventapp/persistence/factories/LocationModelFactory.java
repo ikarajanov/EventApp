@@ -1,8 +1,12 @@
-package org.eventapp.persistence.mappers;
+package org.eventapp.persistence.factories;
 
 import org.eventapp.models.LocationModel;
 import org.eventapp.persistence.datamodels.Location;
-public class LocationModelMapper {
+
+/**
+ * Location Model Factory.
+ */
+public class LocationModelFactory {
 
   /**
    * Creates Location,

@@ -1,4 +1,4 @@
-package org.eventapp.persistence.mappers;
+package org.eventapp.persistence.factories;
 
 import org.eventapp.models.EventModel;
 import org.eventapp.models.LocationModel;
@@ -32,7 +32,7 @@ public class EventModelFactory {
     event.setOwner(owner);
 
     LocationModel locationModel = eventModel.getLocation();
-    Location location = LocationModelMapper.createLocation(locationModel);
+    Location location = LocationModelFactory.createLocation(locationModel);
     event.setLocation(location);
 
     event.setNumberOfPeopleAttending(eventModel.getNumberOfPeopleAttending());
@@ -65,7 +65,7 @@ public class EventModelFactory {
     eventModel.setOwner(eventOwner);
 
     Location location = event.getLocation();
-    LocationModel locationModel = LocationModelMapper.createLocationModel(location);
+    LocationModel locationModel = LocationModelFactory.createLocationModel(location);
     eventModel.setLocation(locationModel);
 
     eventModel.setNumberOfPeopleAttending(event.getNumberOfPeopleAttending());

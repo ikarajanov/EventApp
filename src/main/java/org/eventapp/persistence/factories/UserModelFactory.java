@@ -1,4 +1,4 @@
-package org.eventapp.persistence.mappers;
+package org.eventapp.persistence.factories;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -34,10 +34,8 @@ public class UserModelFactory {
     user.setPassword(userModel.getPassword());
 
     LocationModel locationModel = userModel.getLocation();
-    Location location = LocationModelMapper.createLocation(locationModel);
+    Location location = LocationModelFactory.createLocation(locationModel);
     user.setLocation(location);
-
-    user.setCreatedEvents(getUserEvents(userModel.getCreatedEvents()));
 
     return user;
   }
@@ -60,10 +58,8 @@ public class UserModelFactory {
     userModel.setPassword(user.getPassword());
 
     Location location = user.getLocation();
-    LocationModel locationModel = LocationModelMapper.createLocationModel(location);
+    LocationModel locationModel = LocationModelFactory.createLocationModel(location);
     userModel.setLocation(locationModel);
-
-    userModel.setCreatedEvents(getAllUserDbEvents(user.getCreatedEvents()));
 
     return userModel;
   }
