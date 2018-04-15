@@ -17,7 +17,9 @@ public class EventModel {
   private String category;
   private CoverPhotoModel coverPhoto;
   private String description;
+  private String startDate;
   private String startTime;
+  private String endDate;
   private String endTime;
   private boolean isCanceled;
 }

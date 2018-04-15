@@ -1,20 +1,13 @@
 package org.eventapp.persistence.datamodels;
 
 
-import java.util.Date;
-
-import javax.persistence.Access;
-import javax.persistence.AccessType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
-
 import lombok.Getter;
 import lombok.Setter;
+
+import javax.persistence.*;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+import java.time.LocalDateTime;
 
 @Setter
 @Getter
@@ -30,11 +23,11 @@ public class Event extends BaseEntity {
 
   @ManyToOne
   @JoinColumn(name = "owner_id", referencedColumnName = "id", nullable = false)
-  private User owner;
+  private User owner = new User();
 
   @ManyToOne
   @JoinColumn(name = "location_id", referencedColumnName = "id", nullable = false)
-  private Location location;
+  private Location location = new Location();
 
   @Column(name = "number_of_people_attending")
   private Integer numberOfPeopleAttending;
@@ -43,21 +36,20 @@ public class Event extends BaseEntity {
   @Size(max = 250)
   private String category;
 
-
   // private CoverPhoto coverPhoto;
 
   @NotNull
   @Column(name = "description")
   @Size(max = 500)
   private String description;
-
+  
   @NotNull
   @Column(name = "start_time")
-  private Date startTime;
+  private LocalDateTime startTime;
 
   @NotNull
   @Column(name = "end_time")
-  private Date endTime;
+  private LocalDateTime endTime;
 
   @NotNull
   @Column(name = "is_canceled")

@@ -23,7 +23,7 @@ public class LocationModelFactory {
     location.setAddress(locationModel.getAddress());
     location.setGoogleMapUrl(locationModel.getGoogleMapUrl());
     location.setLatitude(locationModel.getLatitude());
-    location.setLongitude(location.getLongitude());
+    location.setLongitude(locationModel.getLongitude());
 
     return location;
   }

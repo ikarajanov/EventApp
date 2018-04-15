@@ -51,7 +51,7 @@ public class User extends BaseEntity {
 
   @ManyToOne
   @JoinColumn (name = "location_id", referencedColumnName = "id", nullable = false)
-  private Location location;
+  private Location location = new Location();
 
   @Fetch(FetchMode.SUBSELECT)
   @OneToMany(cascade = CascadeType.ALL,  fetch = FetchType.EAGER, mappedBy = "owner")

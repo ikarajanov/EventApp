@@ -37,37 +37,47 @@ public class UserPersistenceServiceImpl implements UserPersistenceService {
 
   public UserModel getUser(String email, String password) {
 
-    User user = userRepository.getUserByEmailAndPassword(email, password);
-
-    if (user == null) {
-      user = userRepository.getUserByEmail(email);
+    try {
+      User user = userRepository.getUserByEmailAndPassword(email, password);
 
       if (user == null) {
-        throw new UserEmailNotFoundException();
+        user = userRepository.getUserByEmail(email);
+
+        if (user == null) {
+          throw new UserEmailNotFoundException();
+        }
+
+        throw new IncorrectPasswordException();
       }
 
-      throw new IncorrectPasswordException();
-    }
+      return UserModelFactory.createUserModel(user);
 
-    return UserModelFactory.createUserModel(user);
+    } catch (Exception e) {
+      throw new RuntimeException(e.getMessage());
+    }
   }
 
   public List<EventModel> getUserEvents(String userId) {
-    User user = userRepository.getUserById(userId);
 
-    if (user == null) {
-      return null;
+    try {
+      User user = userRepository.getUserById(userId);
+
+      if (user == null) {
+        return null;
+      }
+
+      List<Event> createdEvents = user.getCreatedEvents();
+      List<EventModel> userEvents = new ArrayList<EventModel>();
+
+      for (Event event : createdEvents) {
+        EventModel eventModel = EventModelFactory.createEventModel(event);
+        userEvents.add(eventModel);
+      }
+
+      return userEvents;
+    } catch (Exception e) {
+      throw new RuntimeException(e.getMessage());
     }
-
-    List<Event> createdEvents = user.getCreatedEvents();
-    List<EventModel> userEvents = new ArrayList<EventModel>();
-
-    for (Event event : createdEvents) {
-      EventModel eventModel = EventModelFactory.createEventModel(event);
-      userEvents.add(eventModel);
-    }
-    
-    return userEvents;
   }
 
 
