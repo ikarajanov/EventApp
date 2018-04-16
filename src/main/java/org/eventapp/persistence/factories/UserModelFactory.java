@@ -71,8 +71,8 @@ public class UserModelFactory {
     for (String key : userModelEvents.keySet()) {
 
       EventModel eventModel = userModelEvents.get(key);
-      Event event = EventModelFactory.createEvent(eventModel);
-      events.add(event);
+//      Event event = EventModelFactory.createEvent(eventModel);
+//      events.add(event);
     }
 
     return events;
@@ -85,8 +85,8 @@ public class UserModelFactory {
     for (Event event : events) {
 
       String dbId = event.getId();
-      EventModel eventModel = EventModelFactory.createEventModel(event);
-      userModelEvents.put(dbId, eventModel);
+//      EventModel eventModel = EventModelFactory.createEventModel(event);
+//      userModelEvents.put(dbId, eventModel);
     }
 
     return userModelEvents;

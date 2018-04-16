@@ -1,12 +1,12 @@
 package org.eventapp.persistence.datamodels;
 
-
 import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.sql.Blob;
 import java.time.LocalDateTime;
 
 @Setter
@@ -54,4 +54,7 @@ public class Event extends BaseEntity {
   @NotNull
   @Column(name = "is_canceled")
   private boolean isCanceled = false;
+  
+  @Column(name = "cover_photo")
+  private Blob coverPhoto;
 }

@@ -8,5 +8,5 @@ import org.eventapp.models.EventModel;
  */
 public interface EventPersistenceService {
 
-  void createNewEvent(EventModel eventModel);
+  void createNewEvent(EventModel eventModel, String coverPhotoStr);
 }

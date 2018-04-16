@@ -3,6 +3,7 @@ package org.eventapp.controllers;
 import java.util.List;
 
 import org.eventapp.models.EventModel;
+import org.eventapp.models.UpdateEventModel;
 import org.eventapp.services.EventService;
 import org.eventapp.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,8 +25,8 @@ public class EventsController {
   }
 
   @PostMapping(path = "/createNew")
-  public void createNewEvent(@RequestBody EventModel eventModel) {
-    eventService.createNewEvent(eventModel);
+  public void createNewEvent(@RequestBody UpdateEventModel event) {
+    eventService.createNewEvent(event);
   }
 
   @PostMapping(path = "/getAllFbEvents")

@@ -1,5 +1,6 @@
 package org.eventapp.persistence.factories;
 
+import org.apache.commons.codec.binary.Base64;
 import org.eventapp.models.EventModel;
 import org.eventapp.models.LocationModel;
 import org.eventapp.models.UserModel;
@@ -8,6 +9,12 @@ import org.eventapp.persistence.datamodels.Location;
 import org.eventapp.persistence.datamodels.User;
 import org.springframework.util.StringUtils;
 
+import javax.sql.rowset.serial.SerialBlob;
+import javax.xml.bind.DatatypeConverter;
+import java.io.*;
+import java.nio.charset.StandardCharsets;
+import java.sql.Blob;
+import java.sql.SQLException;
 import java.time.LocalDateTime;
 
 /**
@@ -22,7 +29,7 @@ public class EventModelFactory {
    *
    * @return the new event.
    */
-  public static Event createEvent(EventModel eventModel) {
+  public static Event createEvent(EventModel eventModel, String coverPhotoStr) throws SQLException {
 
     Event event = new Event();
 
@@ -40,7 +47,9 @@ public class EventModelFactory {
     event.setNumberOfPeopleAttending(eventModel.getNumberOfPeopleAttending());
     event.setCategory(eventModel.getCategory());
 
-    // eventModel.setcoverPhoto();
+    Blob coverPhoto = createBlobFromString(coverPhotoStr);
+    event.setCoverPhoto(coverPhoto);
+    
     event.setDescription(eventModel.getDescription());
 
     String startTime = eventModel.getStartTime();
@@ -63,7 +72,7 @@ public class EventModelFactory {
    *
    * @return the new event model.
    */
-  public static EventModel createEventModel(Event event) {
+  public static EventModel createEventModel(Event event) throws SQLException, IOException {
 
     EventModel eventModel = new EventModel();
 
@@ -80,7 +89,11 @@ public class EventModelFactory {
 
     eventModel.setNumberOfPeopleAttending(event.getNumberOfPeopleAttending());
     eventModel.setCategory(event.getCategory());
-    // eventModel.setcoverPhoto();
+  
+    Blob coverPhoto = event.getCoverPhoto();
+    String base64Photo = createStringFromBlob(coverPhoto);
+    eventModel.setCoverPhoto(base64Photo);
+    
     eventModel.setDescription(event.getDescription());
     LocalDateTime startTime = event.getStartTime();
     if (startTime != null) {
@@ -118,5 +131,30 @@ public class EventModelFactory {
     }
     
     return endLocalDateTime;
+  }
+  
+  private static Blob createBlobFromString(String imageStr) throws SQLException {
+  
+    if (!StringUtils.isEmpty(imageStr)) {
+      imageStr = imageStr.split(",")[1];
+      byte[] bdata = imageStr.getBytes(StandardCharsets.ISO_8859_1);; // From 0
+      byte[] decodedByte = Base64.decodeBase64(bdata);
+  
+      return new SerialBlob(decodedByte);
+    }
+    
+    return null;
+  }
+  
+  private static String createStringFromBlob(Blob blob) throws IOException, SQLException {
+    
+    if (blob != null) {
+      byte[] bdata = blob.getBytes(1, (int) blob.length()); // From 0
+      byte[] encodedImage = Base64.encodeBase64(bdata);
+  
+      return new String(encodedImage, "EUC_KR");
+    }
+    
+    return null;
   }
 }

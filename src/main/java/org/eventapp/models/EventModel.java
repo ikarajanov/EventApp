@@ -15,7 +15,7 @@ public class EventModel {
   private LocationModel location;
   private Integer numberOfPeopleAttending;
   private String category;
-  private CoverPhotoModel coverPhoto;
+  private String coverPhoto;
   private String description;
   private String startDate;
   private String startTime;

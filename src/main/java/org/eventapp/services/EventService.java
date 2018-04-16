@@ -3,6 +3,7 @@ package org.eventapp.services;
 import java.util.List;
 
 import org.eventapp.models.EventModel;
+import org.eventapp.models.UpdateEventModel;
 
 
 public interface EventService {
@@ -11,5 +12,5 @@ public interface EventService {
 
   List<String> getEventCategories();
 
-  void createNewEvent(EventModel eventModel);
+  void createNewEvent(UpdateEventModel event);
 }

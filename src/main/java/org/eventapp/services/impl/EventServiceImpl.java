@@ -10,6 +10,7 @@ import java.net.URL;
 import java.util.List;
 
 import org.eventapp.models.EventModel;
+import org.eventapp.models.UpdateEventModel;
 import org.eventapp.persistence.service.EventPersistenceService;
 import org.eventapp.services.Categories;
 import org.eventapp.services.EventService;
@@ -56,20 +57,15 @@ public class EventServiceImpl implements EventService {
     return null;
   }
 
-  /**
-   * Gets all event categories.
-   */
   public List<String> getEventCategories() {
     return Categories.getAllCategories();
   }
 
-  /**
-   * Creates new Event.
-   *
-   * @param eventModel the {@link EventModel}.
-   */
-  public void createNewEvent(EventModel eventModel) {
-
-    eventPersistenceService.createNewEvent(eventModel);
+  public void createNewEvent(UpdateEventModel event) {
+  
+    EventModel eventModel = event.getEvent();
+    String coverPhoto = event.getImage();
+  
+    eventPersistenceService.createNewEvent(eventModel, coverPhoto);
   }
 }

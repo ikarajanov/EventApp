@@ -29,7 +29,7 @@ public class EventPersistenceServiceImpl implements EventPersistenceService {
    *
    * @param eventModel the {@link EventModel}.
    */
-  public void createNewEvent(EventModel eventModel) {
+  public void createNewEvent(EventModel eventModel, String coverPhotoStr) {
 
     try {
       LocationModel locationModel = eventModel.getLocation();
@@ -45,7 +45,7 @@ public class EventPersistenceServiceImpl implements EventPersistenceService {
         locationModel.setId(locationModelId);
       }
       
-      Event event = EventModelFactory.createEvent(eventModel);
+      Event event = EventModelFactory.createEvent(eventModel, coverPhotoStr);
 
       eventRepository.save(event);
 
