@@ -19,8 +19,8 @@ public class EventsController {
   @Autowired
   private UserService userService;
 
-  @GetMapping(path = "/getAll")
-  public List<EventModel> getAllEvents(@RequestParam String userId) {
+  @GetMapping(path = "/getUserEvents")
+  public List<EventModel> getUserEvents(@RequestParam String userId) {
     return userService.getUserEvents(userId);
   }
 
