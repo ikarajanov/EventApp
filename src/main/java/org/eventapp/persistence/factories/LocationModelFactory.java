@@ -39,6 +39,7 @@ public class LocationModelFactory {
 
     LocationModel locationModel = new LocationModel();
 
+    locationModel.setId(location.getId());
     locationModel.setName(location.getName());
     locationModel.setAddress(location.getAddress());
     locationModel.setGoogleMapUrl(location.getGoogleMapUrl());

@@ -1,15 +1,15 @@
 package org.eventapp.persistence.service.impl;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.eventapp.models.EventModel;
+import org.eventapp.models.LocationModel;
 import org.eventapp.models.UserModel;
 import org.eventapp.persistence.datamodels.Event;
+import org.eventapp.persistence.datamodels.Location;
 import org.eventapp.persistence.datamodels.User;
 import org.eventapp.persistence.factories.EventModelFactory;
 import org.eventapp.persistence.factories.UserModelFactory;
 import org.eventapp.persistence.repositories.UserRepository;
+import org.eventapp.persistence.service.LocationPersistenceService;
 import org.eventapp.persistence.service.PersistenceService;
 import org.eventapp.persistence.service.UserPersistenceService;
 import org.eventapp.utilities.exceptions.IncorrectPasswordException;
@@ -17,14 +17,25 @@ import org.eventapp.utilities.exceptions.UserAlreadyExistException;
 import org.eventapp.utilities.exceptions.UserEmailNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import javax.persistence.PersistenceException;
+import java.util.ArrayList;
+import java.util.List;
+
 @PersistenceService
 public class UserPersistenceServiceImpl implements UserPersistenceService {
 
   @Autowired
   private UserRepository userRepository;
 
-  public void createNewUser(UserModel userModel) {
-
+  @Autowired
+  private LocationPersistenceService locationPersistenceService;
+  
+  public UserModel createNewUser(UserModel userModel) {
+  
+    LocationModel locationModel = userModel.getLocation();
+    Location location = locationPersistenceService.createNewLocation(locationModel);
+    locationModel.setId(location.getId());
+  
     User user = UserModelFactory.createUser(userModel);
 
     boolean emailIsAlreadyExist = checkIfEmailIsAlreadyExist(userModel.getEmail());
@@ -32,29 +43,32 @@ public class UserPersistenceServiceImpl implements UserPersistenceService {
       throw new UserAlreadyExistException();
     }
 
-    userRepository.save(user);
+    try {
+  
+      userRepository.save(user);
+      
+      return UserModelFactory.createUserModel(user);
+      
+    } catch (Exception e) {
+      throw new PersistenceException(e.getMessage());
+    }
   }
 
   public UserModel getUser(String email, String password) {
 
-    try {
-      User user = userRepository.getUserByEmailAndPassword(email, password);
+    User user = userRepository.getUserByEmailAndPassword(email, password);
+
+    if (user == null) {
+      user = userRepository.getUserByEmail(email);
 
       if (user == null) {
-        user = userRepository.getUserByEmail(email);
-
-        if (user == null) {
-          throw new UserEmailNotFoundException();
-        }
-
-        throw new IncorrectPasswordException();
+        throw new UserEmailNotFoundException();
       }
 
-      return UserModelFactory.createUserModel(user);
-
-    } catch (Exception e) {
-      throw new RuntimeException(e.getMessage());
+      throw new IncorrectPasswordException();
     }
+
+    return UserModelFactory.createUserModel(user);
   }
 
   public List<EventModel> getUserEvents(String userId) {

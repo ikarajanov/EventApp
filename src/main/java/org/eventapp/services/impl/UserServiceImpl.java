@@ -21,10 +21,8 @@ public class UserServiceImpl implements UserService{
   }
 
   public UserModel createNewUser(UserModel user) {
-
-    userPersistenceService.createNewUser(user);
-
-    return user;
+    
+    return userPersistenceService.createNewUser(user);
   }
 
   public List<EventModel> getUserEvents(String userId) {

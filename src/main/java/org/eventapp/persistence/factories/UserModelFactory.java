@@ -34,9 +34,9 @@ public class UserModelFactory {
     user.setPassword(userModel.getPassword());
 
     LocationModel locationModel = userModel.getLocation();
-    Location location = LocationModelFactory.createLocation(locationModel);
-    user.setLocation(location);
-
+    Location location = user.getLocation();
+    location.setId(locationModel.getId());
+  
     return user;
   }
 

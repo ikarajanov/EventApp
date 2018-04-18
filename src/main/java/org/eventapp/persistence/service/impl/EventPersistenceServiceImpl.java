@@ -2,14 +2,15 @@ package org.eventapp.persistence.service.impl;
 
 import org.eventapp.models.EventModel;
 import org.eventapp.models.LocationModel;
+import org.eventapp.models.UserModel;
 import org.eventapp.persistence.datamodels.Event;
 import org.eventapp.persistence.datamodels.Location;
 import org.eventapp.persistence.factories.EventModelFactory;
-import org.eventapp.persistence.factories.LocationModelFactory;
 import org.eventapp.persistence.repositories.EventRepository;
-import org.eventapp.persistence.repositories.LocationRepository;
 import org.eventapp.persistence.service.EventPersistenceService;
+import org.eventapp.persistence.service.LocationPersistenceService;
 import org.eventapp.persistence.service.PersistenceService;
+import org.eventapp.persistence.service.UserPersistenceService;
 import org.springframework.beans.factory.annotation.Autowired;
 
 /**
@@ -22,7 +23,10 @@ public class EventPersistenceServiceImpl implements EventPersistenceService {
   private EventRepository eventRepository;
   
   @Autowired
-  private LocationRepository locationRepository;
+  private LocationPersistenceService locationPersistenceService;
+  
+  @Autowired
+  private UserPersistenceService userPersistenceService;
   
   /**
    * Creates new Event.
@@ -33,18 +37,19 @@ public class EventPersistenceServiceImpl implements EventPersistenceService {
 
     try {
       LocationModel locationModel = eventModel.getLocation();
-      if (locationModel != null) {
-        Location location = locationRepository.getLocationByGoogleMapUrl(locationModel.getGoogleMapUrl());
-
-        if (location == null) {
-          location = LocationModelFactory.createLocation(locationModel);
-          locationRepository.save(location);
-        }
-
-        String locationModelId = location.getId();
-        locationModel.setId(locationModelId);
+      Location location = locationPersistenceService.createNewLocation(locationModel);
+      locationModel.setId(location.getId());
+  
+      UserModel owner = eventModel.getOwner();
+  
+      UserModel user = userPersistenceService.getUser(owner.getEmail(), owner.getPassword());
+      
+      if (user == null) {
+        user = userPersistenceService.createNewUser(owner);
       }
       
+      owner.setId(user.getId());
+  
       Event event = EventModelFactory.createEvent(eventModel, coverPhotoStr);
 
       eventRepository.save(event);
