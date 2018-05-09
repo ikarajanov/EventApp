@@ -2,11 +2,15 @@ package org.eventapp.persistence.service.impl;
 
 import org.eventapp.models.LocationModel;
 import org.eventapp.persistence.datamodels.Location;
-import org.eventapp.persistence.factories.LocationModelFactory;
+import org.eventapp.factories.LocationModelFactory;
+import org.eventapp.persistence.datamodels.User;
 import org.eventapp.persistence.repositories.LocationRepository;
 import org.eventapp.persistence.service.LocationPersistenceService;
 import org.eventapp.persistence.service.PersistenceService;
 import org.springframework.beans.factory.annotation.Autowired;
+
+import java.math.BigDecimal;
+import java.util.List;
 
 /**
  * Implementation for {@link LocationPersistenceService}.
@@ -16,6 +20,16 @@ public class LocationPersistenceServiceImpl implements LocationPersistenceServic
   
   @Autowired
   private LocationRepository locationRepository;
+  
+  @Override
+  public List<Location> getAllOtherLocations(User user) {
+    
+    try {
+      return locationRepository.findAllByUsersIsNotContaining(user);
+    } catch (Exception e) {
+      throw new RuntimeException(e.getMessage());
+    }
+  }
   
   @Override
   public Location createNewLocation(LocationModel locationModel) {
@@ -36,5 +50,23 @@ public class LocationPersistenceServiceImpl implements LocationPersistenceServic
     } catch (Exception e) {
       throw new RuntimeException(e.getMessage());
     }
+  }
+  
+  @Override
+  public Location getLocationByIdLangLat(BigDecimal latitude, BigDecimal longitude) {
+  
+    Location location = null;
+    
+    if (latitude != null && longitude != null) {
+      try {
+  
+        location = locationRepository.getLocationByLatitudeAndLongitude(latitude, longitude);
+    
+      } catch (Exception e) {
+        throw new RuntimeException(e.getMessage());
+      }
+    }
+    
+    return location;
   }
 }

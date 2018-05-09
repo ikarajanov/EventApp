@@ -1,12 +1,13 @@
-package org.eventapp.persistence.factories;
+package org.eventapp.factories;
 
+import org.eventapp.dtos.LocationDto;
 import org.eventapp.models.LocationModel;
 import org.eventapp.persistence.datamodels.Location;
 
 /**
  * Location Model Factory.
  */
-public class LocationModelFactory {
+public final class LocationModelFactory {
 
   /**
    * Creates Location,
@@ -46,6 +47,26 @@ public class LocationModelFactory {
     locationModel.setLatitude(location.getLatitude());
     locationModel.setLongitude(location.getLongitude());
 
+    return locationModel;
+  }
+  
+  /**
+   * Creates Location Model from {@link LocationDto}.
+   *
+   * @param locationDto the location dto.
+   *
+   * @return the new location model.
+   */
+  public static LocationModel createLocationModelFromDto(LocationDto locationDto) {
+  
+    LocationModel locationModel = new LocationModel();
+  
+//    locationModel.setName(locationDto.getName());
+//    locationModel.setAddress(locationDto.getAddress());
+//    locationModel.setGoogleMapUrl(locationDto.getGoogleMapUrl());
+//    locationModel.setLatitude(locationDto.getLatitude());
+//    locationModel.setLongitude(locationDto.getLongitude());
+  
     return locationModel;
   }
 }

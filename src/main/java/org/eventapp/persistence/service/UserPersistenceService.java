@@ -12,4 +12,5 @@ public interface UserPersistenceService {
   UserModel getUser(String email, String password);
 
   List<EventModel> getUserEvents(String userId);
+  
 }

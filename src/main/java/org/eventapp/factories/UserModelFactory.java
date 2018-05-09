@@ -1,4 +1,4 @@
-package org.eventapp.persistence.factories;
+package org.eventapp.factories;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -15,7 +15,7 @@ import org.eventapp.persistence.datamodels.User;
 /**
  * User Model Factory.
  */
-public class UserModelFactory {
+public final class UserModelFactory {
 
   /**
    * Creates new User.

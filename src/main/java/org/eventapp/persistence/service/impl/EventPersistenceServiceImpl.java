@@ -5,13 +5,17 @@ import org.eventapp.models.LocationModel;
 import org.eventapp.models.UserModel;
 import org.eventapp.persistence.datamodels.Event;
 import org.eventapp.persistence.datamodels.Location;
-import org.eventapp.persistence.factories.EventModelFactory;
+import org.eventapp.factories.EventModelFactory;
 import org.eventapp.persistence.repositories.EventRepository;
 import org.eventapp.persistence.service.EventPersistenceService;
 import org.eventapp.persistence.service.LocationPersistenceService;
 import org.eventapp.persistence.service.PersistenceService;
 import org.eventapp.persistence.service.UserPersistenceService;
 import org.springframework.beans.factory.annotation.Autowired;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Implementation of Event Persistence service.
@@ -54,6 +58,28 @@ public class EventPersistenceServiceImpl implements EventPersistenceService {
 
       eventRepository.save(event);
 
+    } catch (Exception e) {
+      throw new RuntimeException(e.getMessage());
+    }
+  }
+  
+  public List<EventModel> getAllEventsToGivenLocation(Location location) {
+    
+    try {
+  
+      List<EventModel> list = new ArrayList<>();
+  
+      if (location != null) {
+        List<Event> allEventsByLocation = eventRepository.getAllEventsByLocation(location.getId());
+  
+        for (Event event : allEventsByLocation) {
+          EventModel eventModel = EventModelFactory.createEventModel(event);
+          list.add(eventModel);
+        }
+      }
+      
+      return list;
+      
     } catch (Exception e) {
       throw new RuntimeException(e.getMessage());
     }

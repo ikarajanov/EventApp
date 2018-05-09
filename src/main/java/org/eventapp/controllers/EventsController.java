@@ -1,5 +1,6 @@
 package org.eventapp.controllers;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 import org.eventapp.models.EventModel;
@@ -27,6 +28,11 @@ public class EventsController {
   @PostMapping(path = "/createNew")
   public void createNewEvent(@RequestBody UpdateEventModel event) {
     eventService.createNewEvent(event);
+  }
+  
+  @GetMapping(path = "/getNearbyEvents")
+  public List<EventModel> getNearbyEvents(@RequestParam String userId, @RequestParam BigDecimal radius) {
+    return eventService.getNearbyEvents(userId, radius);
   }
 
   @PostMapping(path = "/getAllFbEvents")

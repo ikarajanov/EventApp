@@ -41,6 +41,8 @@
     <commons-lang3.version>3.7</commons-lang3.version>
     <httpclient.version>4.5.5</httpclient.version>
     <httpcore.version>4.4.9</httpcore.version>
+    <jackson.version>2.9.4</jackson.version>
+    <javax.version>1.0</javax.version>
   </properties>
 
   <dependencies>
@@ -198,8 +200,19 @@
       <version>${httpcore.version}</version>
     </dependency>
 
-  </dependencies>
+    <dependency>
+      <groupId>com.fasterxml.jackson.core</groupId>
+      <artifactId>jackson-databind</artifactId>
+      <version>${jackson.version}</version>
+    </dependency>
 
+    <dependency>
+      <groupId>javax.json</groupId>
+      <artifactId>javax.json-api</artifactId>
+      <version>${javax.version}</version>
+    </dependency>
+
+  </dependencies>
 
   <build>
     <finalName>com.ik.eventapp</finalName>

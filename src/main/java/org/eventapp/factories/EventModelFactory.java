@@ -1,4 +1,4 @@
-package org.eventapp.persistence.factories;
+package org.eventapp.factories;
 
 import org.apache.commons.codec.binary.Base64;
 import org.eventapp.models.EventModel;
@@ -10,8 +10,7 @@ import org.eventapp.persistence.datamodels.User;
 import org.springframework.util.StringUtils;
 
 import javax.sql.rowset.serial.SerialBlob;
-import javax.xml.bind.DatatypeConverter;
-import java.io.*;
+import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.sql.Blob;
 import java.sql.SQLException;
@@ -20,7 +19,7 @@ import java.time.LocalDateTime;
 /**
  * Event Model Factory.
  */
-public class EventModelFactory {
+public final class EventModelFactory {
 
   /**
    * Creates new Event.
