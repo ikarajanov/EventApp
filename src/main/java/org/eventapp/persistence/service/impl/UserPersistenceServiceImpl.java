@@ -94,7 +94,6 @@ public class UserPersistenceServiceImpl implements UserPersistenceService {
     }
   }
 
-
   private boolean checkIfEmailIsAlreadyExist(String email) {
 
     User user = userRepository.getUserByEmail(email);

@@ -16,4 +16,6 @@ public interface EventService {
   List<EventModel> getNearbyEvents(String userId, BigDecimal radius);
 
   void createNewEvent(UpdateEventModel event);
+  
+  void deleteEvent(String eventId);
 }

@@ -46,11 +46,11 @@ public class Location extends BaseEntity {
   private BigDecimal longitude;
 
   @Fetch(FetchMode.SUBSELECT)
-  @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "location")
+  @OneToMany(cascade = CascadeType.REMOVE, fetch = FetchType.EAGER, mappedBy = "location")
   private List<User> users = new ArrayList<>();
 
   @Fetch(FetchMode.SUBSELECT)
-  @OneToMany(cascade = CascadeType.ALL,   fetch = FetchType.EAGER, mappedBy = "location")
+  @OneToMany(cascade = CascadeType.REMOVE,   fetch = FetchType.EAGER, mappedBy = "location")
   private List<Event> events = new ArrayList<>();
 }
 

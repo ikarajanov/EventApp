@@ -54,6 +54,6 @@ public class User extends BaseEntity {
   private Location location = new Location();
 
   @Fetch(FetchMode.SUBSELECT)
-  @OneToMany(cascade = CascadeType.ALL,  fetch = FetchType.EAGER, mappedBy = "owner")
+  @OneToMany(cascade = CascadeType.REMOVE,  fetch = FetchType.EAGER, mappedBy = "owner")
   private List<Event> createdEvents = new ArrayList<>();
 }

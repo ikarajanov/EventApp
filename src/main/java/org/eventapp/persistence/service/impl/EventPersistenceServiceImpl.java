@@ -15,7 +15,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * Implementation of Event Persistence service.
@@ -63,6 +62,7 @@ public class EventPersistenceServiceImpl implements EventPersistenceService {
     }
   }
   
+  @Override
   public List<EventModel> getAllEventsToGivenLocation(Location location) {
     
     try {
@@ -70,7 +70,7 @@ public class EventPersistenceServiceImpl implements EventPersistenceService {
       List<EventModel> list = new ArrayList<>();
   
       if (location != null) {
-        List<Event> allEventsByLocation = eventRepository.getAllEventsByLocation(location.getId());
+        List<Event> allEventsByLocation = eventRepository.getAllEventsByLocationId(location.getId());
   
         for (Event event : allEventsByLocation) {
           EventModel eventModel = EventModelFactory.createEventModel(event);
@@ -80,6 +80,16 @@ public class EventPersistenceServiceImpl implements EventPersistenceService {
       
       return list;
       
+    } catch (Exception e) {
+      throw new RuntimeException(e.getMessage());
+    }
+  }
+  
+  @Override
+  public void deleteEvent(String eventId) {
+  
+    try {
+      eventRepository.delete(eventId);
     } catch (Exception e) {
       throw new RuntimeException(e.getMessage());
     }

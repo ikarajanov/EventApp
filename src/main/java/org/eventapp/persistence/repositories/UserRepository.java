@@ -10,4 +10,5 @@ public interface UserRepository extends BaseRepository<User> {
   User getUserByEmail(String email);
 
   User getUserById(String id);
+  
 }

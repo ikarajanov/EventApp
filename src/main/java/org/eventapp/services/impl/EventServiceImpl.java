@@ -157,6 +157,20 @@ public class EventServiceImpl implements EventService {
     return getNearbyEvents(latitude, longitude, radius, user);
   }
   
+  @Override
+  public void createNewEvent(UpdateEventModel event) {
+    
+    EventModel eventModel = event.getEvent();
+    String coverPhoto = event.getImage();
+    
+    eventPersistenceService.createNewEvent(eventModel, coverPhoto);
+  }
+  
+  @Override
+  public void deleteEvent(String eventId) {
+    eventPersistenceService.deleteEvent(eventId);
+  }
+  
   private List<LocationDto> getNearbyLocations(String locationJson) throws IOException {
   
     //create ObjectMapper instance
@@ -234,13 +248,5 @@ public class EventServiceImpl implements EventService {
     float dist = (float) (earthRadius * c);
     
     return dist;
-  }
-  
-  public void createNewEvent(UpdateEventModel event) {
-  
-    EventModel eventModel = event.getEvent();
-    String coverPhoto = event.getImage();
-  
-    eventPersistenceService.createNewEvent(eventModel, coverPhoto);
   }
 }
