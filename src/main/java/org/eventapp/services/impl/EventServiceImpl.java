@@ -1,16 +1,12 @@
 package org.eventapp.services.impl;
 
-import com.fasterxml.jackson.core.Version;
-import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.module.SimpleModule;
-import org.eventapp.dtos.Geometry;
+import org.apache.commons.lang3.StringUtils;
 import org.eventapp.dtos.GoogleMapsResponseDto;
 import org.eventapp.dtos.LocationDto;
-import org.eventapp.dtos.LocationRange;
+import org.eventapp.enums.Category;
 import org.eventapp.factories.EventModelFactory;
-import org.eventapp.factories.LocationModelFactory;
 import org.eventapp.models.EventModel;
 import org.eventapp.models.LocationModel;
 import org.eventapp.models.UpdateEventModel;
@@ -22,26 +18,13 @@ import org.eventapp.persistence.service.EventPersistenceService;
 import org.eventapp.persistence.service.LocationPersistenceService;
 import org.eventapp.services.Categories;
 import org.eventapp.services.EventService;
-import org.eventapp.utilities.deserializers.LocationDeserializer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.json.Json;
-import javax.json.JsonArray;
-import javax.json.JsonObject;
-import javax.json.JsonReader;
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.StringReader;
 import java.math.BigDecimal;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.ProtocolException;
-import java.net.URL;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -60,36 +43,11 @@ public class EventServiceImpl implements EventService {
   private LocationPersistenceService locationPersistenceService;
   
   private final String API_KEY = "AIzaSyDkRzpU9HsNoJ35vq8udqIxw1CLs-oDv2E";
+  private final BigDecimal DEFAULT_RADIUS = BigDecimal.valueOf(30);
   
   private final String GOOGLE_MAPS_URL = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?";
 
   public List<EventModel> getFbUserEvents(String accessToken) {
-//
-//    try {
-////      String urlString = "http://graph.facebook.com/v2.10/" + accessToken + "/events";
-////      URL url = new URL(urlString);
-////      HttpURLConnection con = (HttpURLConnection) url.openConnection();
-////      con.setRequestMethod("GET");
-////      int status = con.getResponseCode();
-////
-////      // TODO
-////      if (status == HttpURLConnection.HTTP_OK) {
-////        BufferedReader in = new BufferedReader(
-////          new InputStreamReader(con.getInputStream()));
-////        String inputLine;
-////        StringBuffer content = new StringBuffer();
-////        while ((inputLine = in.readLine()) != null) {
-////          content.append(inputLine);
-////        }
-////        in.close();
-////      }
-//    } catch (MalformedURLException e) {
-//      e.printStackTrace();
-//    } catch (ProtocolException e) {
-//      e.printStackTrace();
-//    } catch (IOException e) {
-//      e.printStackTrace();
-//    }
 
     return null;
   }
@@ -99,7 +57,7 @@ public class EventServiceImpl implements EventService {
   }
   
   @Override
-  public List<EventModel> getNearbyEvents(String userId, BigDecimal radius) {
+  public List<EventModel> getUserNearbyEvents(String userId) {
   
     User user = userRepository.getUserById(userId);
     
@@ -111,50 +69,94 @@ public class EventServiceImpl implements EventService {
   
     BigDecimal latitude = location.getLatitude();
     BigDecimal longitude = location.getLongitude();
-//
-//    String urlString =
-//      GOOGLE_MAPS_URL + "location="
-//        + latitude
-//        + "," + longitude
-//        + "&radius=" + radius
-//        + "&key=" + API_KEY;
-//
-//    URL url;
-//    try {
-//      url = new URL(urlString);
-//
-//      HttpURLConnection con = (HttpURLConnection) url.openConnection();
-//      con.setRequestMethod("GET");
-//      int status = con.getResponseCode();
-//
-//      if (status == HttpURLConnection.HTTP_OK) {
-//
-//        BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
-//        String inputLine;
-//        StringBuilder content = new StringBuilder();
-//
-//        while ((inputLine = in.readLine()) != null) {
-//          content.append(inputLine);
-//        }
-//        in.close();
-//
-//        String locationJson = content.toString();
-//
-////        List<LocationDto> locationDtos = getNearbyLocations(locationJson);
-//
-//      }
-//
-//    } catch (MalformedURLException e) {
-//      e.printStackTrace();
-//    } catch (ProtocolException e) {
-//      e.printStackTrace();
-//    } catch (IOException e) {
-//      e.printStackTrace();
-//    } finally {
-//
-//    }
-//
-    return getNearbyEvents(latitude, longitude, radius, user);
+    
+    return getNearbyEvents(latitude, longitude, DEFAULT_RADIUS, user);
+  }
+  
+  @Override
+  public List<EventModel> getEventsNearLocation(String userId, LocationModel locationModel, BigDecimal radius) {
+  
+    List<EventModel> events = new ArrayList<>();
+    User user = userRepository.getUserById(userId);
+    
+    if (Objects.nonNull(locationModel) && Objects.nonNull(user)) {
+      BigDecimal latitude = locationModel.getLatitude();
+      BigDecimal longitude = locationModel.getLongitude();
+  
+      List<EventModel> nearbyEvents = getNearbyEvents(latitude, longitude, radius, user);
+      
+      return nearbyEvents;
+    }
+    
+    return events;
+  }
+  
+  @Override
+  public List<EventModel> getEventsByCategory(String userId, Category category, BigDecimal radius) {
+    List<EventModel> events = new ArrayList<>();
+    User user = userRepository.getUserById(userId);
+  
+    if (Objects.nonNull(category) && Objects.nonNull(user)) {
+  
+      List<EventModel> eventsByCategory = eventPersistenceService.getEventsByCategory(category, user);
+      return eventsByCategory;
+    }
+  
+    return events;
+  }
+  
+  @Override
+  public List<EventModel> findEvents(
+    String userId,
+    BigDecimal distance,
+    BigDecimal latitude,
+    BigDecimal longitude,
+    String category) {
+    
+    if (StringUtils.isEmpty(userId)) {
+      throw new IllegalArgumentException("User id can't be empty!");
+    }
+  
+    User user = userRepository.getUserById(userId);
+    
+    BigDecimal distanceToEvent = DEFAULT_RADIUS;
+    
+    if (Objects.nonNull(distance) && distance.compareTo(BigDecimal.ZERO) > 0) {
+      distanceToEvent = distance.divide(BigDecimal.valueOf(1000), 0);
+    }
+  
+    if (Objects.nonNull(latitude) && Objects.nonNull(longitude)) {
+      List<EventModel> eventsNearLocation = getNearbyEvents(latitude, longitude, distanceToEvent, user);
+      
+      if (StringUtils.isNotBlank(category)) {
+        return getEventsToGivenLocationAndCategory(eventsNearLocation, category);
+      }
+      
+      return eventsNearLocation;
+    }
+  
+    if (StringUtils.isNotBlank(category)) {
+      Category categoryEnum = Category.valueOf(category);
+      if (Category.None != categoryEnum) {
+        List<EventModel> eventsByCategory = eventPersistenceService.getEventsByCategory(categoryEnum, user);
+        return eventsByCategory;
+      }
+    }
+    
+    return new ArrayList<>();
+  }
+  
+  private List<EventModel> getEventsToGivenLocationAndCategory(
+    List<EventModel> eventsToGivenLocation,
+    String category) {
+  
+    List<EventModel> eventModels = eventsToGivenLocation
+      .stream()
+      .filter(eventModel -> StringUtils.isNotBlank(eventModel.getCategory()))
+      .filter(eventModel -> eventModel.getCategory().equals(category))
+      .collect(Collectors.toList());
+    
+    return eventModels;
   }
   
   @Override
@@ -190,19 +192,6 @@ public class EventServiceImpl implements EventService {
   
     List<Location> allLocations = locationPersistenceService.getAllOtherLocations(user);
   
-//    for (LocationDto locationModel : locationDtos) {
-//
-//      Geometry geometry = locationModel.getGeometry();
-//      LocationRange location = geometry.getLocation();
-//
-//      Location eventLocation = locationPersistenceService.getLocationByIdLangLat(location.getLat(), location.getLng());
-//
-//      List<EventModel> allEventsToGivenLocation =
-//        eventPersistenceService.getAllEventsToGivenLocation(eventLocation);
-//
-//      nearbyEvents.addAll(allEventsToGivenLocation);
-//    }
-    
     for (Location location : allLocations) {
       BigDecimal latitude = location.getLatitude();
       BigDecimal longitude = location.getLongitude();

@@ -2,10 +2,10 @@ package org.eventapp.controllers;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Optional;
 
-import org.eventapp.models.EventModel;
-import org.eventapp.models.UpdateEventModel;
-import org.eventapp.models.UserModel;
+import org.eventapp.enums.Category;
+import org.eventapp.models.*;
 import org.eventapp.services.EventService;
 import org.eventapp.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,7 +27,7 @@ public class EventsController {
   }
 
   @PostMapping(path = "/createNew")
-  public List<EventModel>  createNewEvent(@RequestBody UpdateEventModel event) {
+  public List<EventModel> createNewEvent(@RequestBody UpdateEventModel event) {
     
     eventService.createNewEvent(event);
   
@@ -47,8 +47,18 @@ public class EventsController {
   }
   
   @GetMapping(path = "/getNearbyEvents")
-  public List<EventModel> getNearbyEvents(@RequestParam String userId, @RequestParam BigDecimal radius) {
-    return eventService.getNearbyEvents(userId, radius);
+  public List<EventModel> getNearbyEvents(@RequestParam String userId) {
+    return eventService.getUserNearbyEvents(userId);
+  }
+  
+  @GetMapping(path = "/findBy")
+  public List<EventModel> findEvents(
+    @RequestParam String userId,
+    @RequestParam(required = false) BigDecimal distance,
+    @RequestParam(required = false) BigDecimal latitude,
+    @RequestParam(required = false) BigDecimal longitude,
+    @RequestParam(required = false) String category) {
+    return eventService.findEvents(userId, distance, latitude, longitude, category);
   }
 
   @PostMapping(path = "/getAllFbEvents")

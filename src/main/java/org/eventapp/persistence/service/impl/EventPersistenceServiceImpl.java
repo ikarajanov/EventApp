@@ -1,11 +1,13 @@
 package org.eventapp.persistence.service.impl;
 
+import org.eventapp.enums.Category;
 import org.eventapp.models.EventModel;
 import org.eventapp.models.LocationModel;
 import org.eventapp.models.UserModel;
 import org.eventapp.persistence.datamodels.Event;
 import org.eventapp.persistence.datamodels.Location;
 import org.eventapp.factories.EventModelFactory;
+import org.eventapp.persistence.datamodels.User;
 import org.eventapp.persistence.repositories.EventRepository;
 import org.eventapp.persistence.service.EventPersistenceService;
 import org.eventapp.persistence.service.LocationPersistenceService;
@@ -13,6 +15,8 @@ import org.eventapp.persistence.service.PersistenceService;
 import org.eventapp.persistence.service.UserPersistenceService;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.io.IOException;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -93,5 +97,28 @@ public class EventPersistenceServiceImpl implements EventPersistenceService {
     } catch (Exception e) {
       throw new RuntimeException(e.getMessage());
     }
+  }
+  
+  @Override
+  public List<EventModel> getEventsByCategory(Category category, User user) {
+    
+      List<Event> eventsByCategory =
+        eventRepository.findAllByOwnerIdIsNotContainingAndCategory(user.getId(), category.toString());
+  
+      List<EventModel> eventModels = new ArrayList<>();
+      
+      for (Event event : eventsByCategory) {
+        EventModel eventModel = null;
+        try {
+          eventModel = EventModelFactory.createEventModel(event);
+        } catch (SQLException e) {
+          e.printStackTrace();
+        } catch (IOException e) {
+          e.printStackTrace();
+        }
+        eventModels.add(eventModel);
+      }
+      
+      return eventModels;
   }
 }

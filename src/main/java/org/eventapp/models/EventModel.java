@@ -22,4 +22,10 @@ public class EventModel {
   private String endDate;
   private String endTime;
   private boolean isCanceled;
+  
+  @Override
+  public boolean equals(Object event) {
+    EventModel eventModel = (EventModel) event;
+    return id.equals(eventModel.getId());
+  }
 }
