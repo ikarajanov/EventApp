@@ -2,12 +2,11 @@ package org.eventapp.controllers;
 
 import java.math.BigDecimal;
 import java.util.List;
-import java.util.Optional;
 
-import org.eventapp.enums.Category;
 import org.eventapp.models.*;
 import org.eventapp.services.EventService;
 import org.eventapp.services.UserService;
+import org.eventapp.utilities.EventUtilities;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -22,8 +21,14 @@ public class EventsController {
   private UserService userService;
 
   @GetMapping(path = "/getUserEvents")
-  public List<EventModel> getUserEvents(@RequestParam String userId) {
-    return userService.getUserEvents(userId);
+  public List<EventModel> getUserEvents(
+    @RequestParam String userId,
+    @RequestParam(required = false) BigDecimal step) {
+    
+    List<EventModel> userEvents = userService.getUserEvents(userId);
+    List<EventModel> filteredEvents = EventUtilities.filterEventsRequiredByStep(userEvents, step);
+  
+    return filteredEvents;
   }
 
   @PostMapping(path = "/createNew")
@@ -35,7 +40,7 @@ public class EventsController {
     UserModel owner = eventModel.getOwner();
     String userId = owner.getId();
     
-    return getUserEvents(userId);
+    return getUserEvents(userId, BigDecimal.ZERO);
   }
   
   @PostMapping(path = "/deleteEvent")
@@ -43,12 +48,18 @@ public class EventsController {
     
     eventService.deleteEvent(eventId);
     
-    return getUserEvents(userId);
+    return getUserEvents(userId, BigDecimal.ZERO);
   }
   
   @GetMapping(path = "/getNearbyEvents")
-  public List<EventModel> getNearbyEvents(@RequestParam String userId) {
-    return eventService.getUserNearbyEvents(userId);
+  public List<EventModel> getNearbyEvents(
+    @RequestParam String userId,
+    @RequestParam(required = false) BigDecimal step) {
+  
+    List<EventModel> userNearbyEvents = eventService.getUserNearbyEvents(userId);
+    List<EventModel> filteredEvents = EventUtilities.filterEventsRequiredByStep(userNearbyEvents, step);
+  
+    return filteredEvents;
   }
   
   @GetMapping(path = "/findBy")
@@ -57,8 +68,12 @@ public class EventsController {
     @RequestParam(required = false) BigDecimal distance,
     @RequestParam(required = false) BigDecimal latitude,
     @RequestParam(required = false) BigDecimal longitude,
-    @RequestParam(required = false) String category) {
-    return eventService.findEvents(userId, distance, latitude, longitude, category);
+    @RequestParam(required = false) String category,
+    @RequestParam(required = false) BigDecimal step) {
+    List<EventModel> searchedEvents = eventService.findEvents(userId, distance, latitude, longitude, category);
+    List<EventModel> filteredEvents = EventUtilities.filterEventsRequiredByStep(searchedEvents, step);
+    
+    return filteredEvents;
   }
 
   @PostMapping(path = "/getAllFbEvents")
